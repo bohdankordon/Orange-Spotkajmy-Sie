@@ -1,7 +1,5 @@
 # Zadanie "Spotkajmy się"
 
----
-
 Zaimplementować w języku Java algorytm, który na podstawie kalendarzy dwóch osób oraz
 oczekiwanej długości spotkania przedstawi propozycję możliwych terminów spotkań.
 
