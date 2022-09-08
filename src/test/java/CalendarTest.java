@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 
 class CalendarTest {
 
@@ -27,7 +28,7 @@ class CalendarTest {
         Calendar cal2 = mapper.readValue(new File("src/data/calendar2.json"), Calendar.class);
 
         assertEquals("[Meeting[startTime=11:30, endTime=12:00], Meeting[startTime=15:00, endTime=16:00], Meeting[startTime=18:00, endTime=18:30]]",
-                Calendar.findAvailableMeetingTime(cal1, cal2, "00:30").toString());
+                Calendar.findAvailableMeetingTime(cal1, cal2, Duration.ofMinutes(30)).toString());
     }
 
 }

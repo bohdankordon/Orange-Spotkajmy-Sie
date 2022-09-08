@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class Calendar {
         Collections.sort(meetings);
     }
 
-    public static List<Meeting> findAvailableMeetingTime(Calendar cal1, Calendar cal2, String duration) {
+    public static List<Meeting> findAvailableMeetingTime(Calendar cal1, Calendar cal2, Duration duration) {
         // merge 2 calendars
         LocalTime maxStartWorkingHours = cal1.startWorkingHours.compareTo(cal2.startWorkingHours) >= 0 ? cal1.startWorkingHours : cal2.startWorkingHours;
         LocalTime minEndWorkingHours = cal1.endWorkingHours.compareTo(cal2.endWorkingHours) < 0 ? cal1.endWorkingHours : cal2.endWorkingHours;
@@ -67,20 +68,24 @@ public class Calendar {
 
         // find available time slots
         List<Meeting> available = new ArrayList<>();
-        if (merged.startWorkingHours.compareTo(merged.meetings.get(0).getStartTime()) < 0) {
+        if (compareTimeWithDuration(merged.startWorkingHours, merged.meetings.get(0).getStartTime(), duration)) {
             available.add(new Meeting(merged.startWorkingHours, merged.meetings.get(0).getStartTime()));
         }
         for (int i = 0, len = merged.meetings.size() - 1; i < len; i++) {
-            LocalTime endTime = merged.meetings.get(i).getEndTime();
-            LocalTime startTime = merged.meetings.get(i + 1).getStartTime();
-            if (endTime.compareTo(startTime) < 0) {
-                available.add(new Meeting(endTime, startTime));
+            LocalTime possibleStartTime = merged.meetings.get(i).getEndTime();
+            LocalTime possibleEndTime = merged.meetings.get(i + 1).getStartTime();
+            if (compareTimeWithDuration(possibleStartTime, possibleEndTime, duration)) {
+                available.add(new Meeting(possibleStartTime, possibleEndTime));
             }
         }
-        if (merged.meetings.get(merged.meetings.size() - 1).getEndTime().compareTo(merged.endWorkingHours) < 0) {
+        if (compareTimeWithDuration(merged.meetings.get(merged.meetings.size() - 1).getEndTime(), merged.endWorkingHours, duration)) {
             available.add(new Meeting(merged.meetings.get(merged.meetings.size() - 1).getEndTime(), merged.endWorkingHours));
         }
         return available;
+    }
+
+    private static boolean compareTimeWithDuration(LocalTime t1, LocalTime t2, Duration duration) {
+        return t1.compareTo(t2) < 0 && Duration.between(t1, t2).compareTo(duration) >= 0;
     }
 
     @Override
