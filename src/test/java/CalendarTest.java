@@ -26,9 +26,10 @@ class CalendarTest {
         ObjectMapper mapper = new ObjectMapper();
         Calendar cal1 = mapper.readValue(new File("src/data/calendar1.json"), Calendar.class);
         Calendar cal2 = mapper.readValue(new File("src/data/calendar2.json"), Calendar.class);
+        Duration duration = Duration.ofMinutes(30);
 
         assertEquals("[Meeting[startTime=11:30, endTime=12:00], Meeting[startTime=15:00, endTime=16:00], Meeting[startTime=18:00, endTime=18:30]]",
-                Calendar.findAvailableMeetingTime(cal1, cal2, Duration.ofMinutes(30)).toString());
+                Calendar.findAvailableMeetingTime(cal1, cal2, duration).toString());
     }
 
 }
