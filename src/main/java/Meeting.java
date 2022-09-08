@@ -1,7 +1,7 @@
 import java.time.LocalTime;
 import java.util.StringJoiner;
 
-public class Meeting {
+public class Meeting implements Comparable<Meeting> {
 
     private LocalTime startTime;
     private LocalTime endTime;
@@ -25,6 +25,15 @@ public class Meeting {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public int compareTo(Meeting m) {
+        if (m.startTime == null) {
+            return 1;
+        }
+        int res = startTime.compareTo(m.startTime);
+        return res == 0 ? endTime.compareTo(m.endTime) : res;
     }
 
     @Override
