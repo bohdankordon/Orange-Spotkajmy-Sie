@@ -6,6 +6,7 @@ public class Meeting implements Comparable<Meeting> {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    // assuming that json data is valid, and we don't need to perform checks on these fields
     public Meeting(LocalTime startTime, LocalTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;

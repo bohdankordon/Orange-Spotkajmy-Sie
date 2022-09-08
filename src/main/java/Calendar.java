@@ -17,6 +17,7 @@ public class Calendar {
 
     }
 
+    // assuming that json data is valid, and we don't need to perform checks on these fields
     public Calendar(LocalTime startWorkingHours, LocalTime endWorkingHours, List<Meeting> meetings) {
         this.startWorkingHours = startWorkingHours;
         this.endWorkingHours = endWorkingHours;
